@@ -600,9 +600,28 @@ class LandingFrame(ttk.Frame):
         except Exception as e:
             print(f"Error loading landing bg: {e}")
 
-        # 2. Top Container (Clock + Input) - Centered Card
+        # 2. Navigation Toolbar (ในหน้าต่าง) - แสดงเมนูให้เห็นชัดทุก OS
+        # บน macOS เมนูบาร์ปกติจะไปอยู่บนสุดของจอ ไม่ใช่ในหน้าต่าง
+        # แถบนี้จึงช่วยให้เข้าถึง Dashboard / Residents / Trainers / Rooms / Reports ได้เสมอ
+        navbar = ttk.Frame(self, style="Card.TFrame", padding=(12, 8))
+        navbar.pack(fill=tk.X, padx=0, pady=0)
+
+        ttk.Label(navbar, text="Condo Fitness", font=("Segoe UI Semibold", 13),
+                  style="Card.TLabel").pack(side=tk.LEFT, padx=(8, 20))
+
+        nav_items = [
+            ("Dashboard", self.controller.open_dashboard),
+            ("Residents", self.controller.open_residents),
+            ("Trainers", self.controller.open_trainers),
+            ("Rooms", self.controller.open_rooms),
+            ("Reports", self.controller.open_reports),
+        ]
+        for text, cmd in nav_items:
+            ttk.Button(navbar, text=text, style="Tool.TButton", command=cmd).pack(side=tk.LEFT, padx=4)
+
+        # 3. Top Container (Clock + Input) - Centered Card
         top_card = ttk.Frame(self, style="Card.TFrame", padding=30)
-        top_card.pack(pady=(40, 20))
+        top_card.pack(pady=(20, 20))
         
         # Clock
         self.clock_lbl = ttk.Label(top_card, text="", font=("Segoe UI Light", 48), style="Card.TLabel")
